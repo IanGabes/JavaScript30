@@ -48,8 +48,12 @@
 
 <script>
   var onKeyPress = function(e){
-    var audioElement = document.querySelector(`audio[data-key="${e.keyCode}"]`);
-    var keyElement = document.querySelector(`div[data-key="${e.keyCode}"]`);
+    playSoundForKey(e.keyCode);
+  }
+  
+  var playSoundForKey = function(keyCode){
+    var audioElement = document.querySelector(`audio[data-key="${keyCode}"]`);
+    var keyElement = document.querySelector(`div[data-key="${keyCode}"]`);
     
     if(!audioElement) return;
     
@@ -57,8 +61,8 @@
     audioElement.currentTime = 0;
     audioElement.play();
   }
-  
-  const keys = document.querySelectorAll('.key');
+
+  const keys = document.querySelectorAll('div.key');
 
   keys.forEach(key => {
       key.addEventListener('transitionend', function(e){
@@ -67,7 +71,13 @@
         e.target.classList.remove("playing");
       });
   });
-  
+
+  keys.forEach(key =>{
+    key.addEventListener('click', function(e){
+      var curKey = e.currentTarget.getAttribute('data-key');
+      playSoundForKey(curKey);
+    });
+  });
 
   window.addEventListener('keydown', onKeyPress)
 </script>
